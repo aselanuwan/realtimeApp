@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model\Question;
+use App\Http\Resources\QuestionResource;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -14,7 +15,7 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
+       return QuestionResource::collection(Question::latest()->get());
     }
 
     /**
@@ -22,20 +23,10 @@ class QuestionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
-        //
+       Question::create($request->all());
     }
 
     /**
@@ -46,7 +37,7 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        //
+         return new QuestionResource($question);
     }
 
     /**
@@ -80,6 +71,7 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        //
+        $question->delete();
+        return response('Deleted',201);
     }
 }
